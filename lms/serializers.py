@@ -5,9 +5,9 @@ from lms.models import Course, Lessons
 
 class CourseSerializer(serializers.ModelSerializer):
     model = Course
-    fields = ['title', 'description']
+    fields = '__all__'
 
 
 class LessonsSerializer(serializers.ModelSerializer):
     model = Lessons
-    fields = ['title', 'description', 'course']
+    fields = '__all__'
