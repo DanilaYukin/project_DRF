@@ -4,10 +4,12 @@ from lms.models import Course, Lessons
 
 
 class CourseSerializer(serializers.ModelSerializer):
-    model = Course
-    fields = '__all__'
+    class Meta:
+        model = Course
+        fields = '__all__'
 
 
 class LessonsSerializer(serializers.ModelSerializer):
-    model = Lessons
-    fields = '__all__'
+    class Meta:
+        model = Lessons
+        fields = '__all__'
