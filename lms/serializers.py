@@ -7,7 +7,7 @@ from users.models import Payments
 class LessonsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lessons
-        fields = '__all__'
+        fields = "__all__"
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -20,10 +20,10 @@ class CourseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Course
-        fields = '__all__'
+        fields = "__all__"
 
 
 class PaymentsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Payments
-        fields = '__all__'
+        fields = "__all__"

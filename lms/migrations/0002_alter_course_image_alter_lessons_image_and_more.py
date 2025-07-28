@@ -6,23 +6,35 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('lms', '0001_initial'),
+        ("lms", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='course',
-            name='image',
-            field=models.ImageField(blank=True, null=True, upload_to='course_image/', verbose_name='картинка'),
+            model_name="course",
+            name="image",
+            field=models.ImageField(
+                blank=True,
+                null=True,
+                upload_to="course_image/",
+                verbose_name="картинка",
+            ),
         ),
         migrations.AlterField(
-            model_name='lessons',
-            name='image',
-            field=models.ImageField(blank=True, null=True, upload_to='lessons_image/', verbose_name='картинка'),
+            model_name="lessons",
+            name="image",
+            field=models.ImageField(
+                blank=True,
+                null=True,
+                upload_to="lessons_image/",
+                verbose_name="картинка",
+            ),
         ),
         migrations.AlterField(
-            model_name='lessons',
-            name='video_url',
-            field=models.URLField(blank=True, null=True, verbose_name='ссылка на видео'),
+            model_name="lessons",
+            name="video_url",
+            field=models.URLField(
+                blank=True, null=True, verbose_name="ссылка на видео"
+            ),
         ),
     ]
