@@ -1,10 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-from lms.models import Course, Lessons
+from lms.models import Lessons, Course
 
 
 class User(AbstractUser):
+    username = None
     email = models.EmailField(unique=True, verbose_name="email")
     phone_number = models.CharField(
         max_length=15, blank=True, verbose_name="номер телефона"
@@ -15,7 +16,7 @@ class User(AbstractUser):
     country = models.CharField(max_length=50, blank=True, verbose_name="страна")
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["username"]
+    REQUIRED_FIELDS = []
 
     def __str__(self):
         return self.email
