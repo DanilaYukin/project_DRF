@@ -2,7 +2,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics
 from rest_framework.filters import OrderingFilter
 from rest_framework.generics import CreateAPIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from lms.serializers import PaymentsSerializer
 from users.models import User, Payments
@@ -15,12 +15,12 @@ class PaymentsListAPIView(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = ("course", "lessons")
     ordering_fields = ("date", "payment_method")
-    permission_classes = IsAuthenticated
 
 
 class UserCreateApiView(CreateAPIView):
     serializer_class = UserSerializer
     queryset = User.objects.all()
+    permissions_class = AllowAny
 
     def perform_create(self, serializer):
         user = serializer.save(is_active=True)

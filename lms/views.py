@@ -19,6 +19,8 @@ class CourseViewSet(viewsets.ModelViewSet):
             self.permission_classes = [IsModer | IsOwner]
         elif self.action == 'retrieve':
             self.permission_classes = [IsModer | IsOwner]
+        elif self.action == 'list':
+            self.permission_classes = [IsOwner]
         return [permission() for permission in self.permission_classes]
 
     def perform_create(self, serializer):
@@ -30,7 +32,7 @@ class CourseViewSet(viewsets.ModelViewSet):
 class LessonCreateAPIView(generics.CreateAPIView):
     serializer_class = LessonsSerializer
     queryset = Lessons.objects.all()
-    permission_classes = [IsAuthenticated, ~IsModer]
+    permission_classes = [~IsModer]
 
     def perform_create(self, serializer):
         lesson = serializer.save()
