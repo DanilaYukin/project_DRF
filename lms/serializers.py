@@ -1,10 +1,12 @@
 from rest_framework import serializers
 
-from lms.models import Course, Lessons
-from users.models import Payments
+from lms.models import Course, Lessons, Subscription
+from lms.validators import DescriptionUrlValidator
 
 
 class LessonsSerializer(serializers.ModelSerializer):
+    description = serializers.CharField(validators=[DescriptionUrlValidator(field='description')])
+
     class Meta:
         model = Lessons
         fields = "__all__"
@@ -21,9 +23,16 @@ class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = "__all__"
+        validators = [DescriptionUrlValidator(field='description')]
 
 
-class PaymentsSerializer(serializers.ModelSerializer):
+class SubscriptionSerializer(serializers.ModelSerializer):
+    is_subscribed = serializers.SerializerMethodField()
+
+    def get_is_subscribed(self, course):
+        user = self.context['request'].user
+        return Subscription.objects.filter(user=user, course=course).exists()
+
     class Meta:
-        model = Payments
-        fields = "__all__"
+        model = Subscription
+        fields = '__all__'

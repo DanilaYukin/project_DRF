@@ -40,3 +40,10 @@ class Lessons(models.Model):
         verbose_name = "урок"
         verbose_name_plural = "уроки"
         ordering = ["title", "course"]
+
+
+class Subscription(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True,
+                             verbose_name='пользователь')
+    course = models.ForeignKey(Course, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='курс')
+
