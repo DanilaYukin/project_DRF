@@ -5,7 +5,9 @@ from lms.validators import DescriptionUrlValidator
 
 
 class LessonsSerializer(serializers.ModelSerializer):
-    description = serializers.CharField(validators=[DescriptionUrlValidator(field='description')])
+    description = serializers.CharField(
+        validators=[DescriptionUrlValidator(field="description")]
+    )
 
     class Meta:
         model = Lessons
@@ -23,16 +25,16 @@ class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = "__all__"
-        validators = [DescriptionUrlValidator(field='description')]
+        validators = [DescriptionUrlValidator(field="description")]
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):
     is_subscribed = serializers.SerializerMethodField()
 
     def get_is_subscribed(self, course):
-        user = self.context['request'].user
+        user = self.context["request"].user
         return Subscription.objects.filter(user=user, course=course).exists()
 
     class Meta:
         model = Subscription
-        fields = '__all__'
+        fields = "__all__"

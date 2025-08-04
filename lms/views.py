@@ -16,15 +16,15 @@ class CourseViewSet(viewsets.ModelViewSet):
     pagination_class = LMSPaginator
 
     def get_permissions(self):
-        if self.action == 'create':
+        if self.action == "create":
             self.permission_classes = [~IsModer]
-        elif self.action == 'destroy':
+        elif self.action == "destroy":
             self.permission_classes = [~IsModer]
-        elif self.action == 'update':
+        elif self.action == "update":
             self.permission_classes = [IsModer | IsOwner]
-        elif self.action == 'retrieve':
+        elif self.action == "retrieve":
             self.permission_classes = [IsModer | IsOwner]
-        elif self.action == 'list':
+        elif self.action == "list":
             self.permission_classes = [IsOwner]
         return [permission() for permission in self.permission_classes]
 
@@ -35,7 +35,7 @@ class CourseViewSet(viewsets.ModelViewSet):
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
-        context['request'] = self.request
+        context["request"] = self.request
         return context
 
 
@@ -80,7 +80,7 @@ class SubscriptionAPIView(APIView):
     @staticmethod
     def post(request, *args, **kwargs):
         user = request.user
-        course_id = request.data.get('course_id')
+        course_id = request.data.get("course_id")
 
         if not course_id:
             return Response({"error": "course_id"}, status=400)
@@ -90,9 +90,9 @@ class SubscriptionAPIView(APIView):
 
         if subscription_qs.exists():
             subscription_qs.delete()
-            message = 'Подписка удалена'
+            message = "Подписка удалена"
         else:
             Subscription.objects.create(user=user, course=course)
-            message = 'Подписка добавлена'
+            message = "Подписка добавлена"
 
-        return Response({'message': message})
+        return Response({"message": message})
