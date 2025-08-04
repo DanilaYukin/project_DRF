@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "django_filters",
     "users",
     "lms",
+    "drf_yasg",
 ]
 
 MIDDLEWARE = [
@@ -136,7 +137,9 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
     ],
 }
+
+STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
