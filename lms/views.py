@@ -1,13 +1,14 @@
 from rest_framework import viewsets, generics
 from rest_framework.generics import get_object_or_404
-from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from users.models import User
 from users.permissions import IsModer, IsOwner
 from .models import Course, Lessons, Subscription
 from .paginators import LMSPaginator
 from .serializers import CourseSerializer, LessonsSerializer
+from .tasks import send_email
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -29,14 +30,29 @@ class CourseViewSet(viewsets.ModelViewSet):
         return [permission() for permission in self.permission_classes]
 
     def perform_create(self, serializer):
-        course = serializer.save()
-        course.owner = self.request.user
-        course.save()
+        serializer.save(owner=self.request.user)
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
         context["request"] = self.request
         return context
+
+    def update(self, request, *args, **kwargs):
+
+        response = super().update(request, *args, **kwargs)
+
+        course = request.data.get("course_id")
+        subscriptions = Subscription.objects.filter(
+            course=course,
+        ).select_related('user')
+
+        for subscription in subscriptions:
+            send_email.delay(
+                user_email=subscription.user.email,
+                course_title=course.title
+            )
+
+        return response
 
 
 class LessonCreateAPIView(generics.CreateAPIView):

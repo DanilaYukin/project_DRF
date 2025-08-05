@@ -1,5 +1,5 @@
 import re
-from rest_framework import validators
+from rest_framework import validators, serializers
 
 
 class DescriptionUrlValidator:
@@ -9,8 +9,16 @@ class DescriptionUrlValidator:
         self.field = field
 
     def __call__(self, value):
+        value = value.get(self.field)
+
+        if value is None:
+            return value
+
         if not isinstance(value, str):
-            raise validators.ValidationError("Описание должно быть строкой.")
+            raise serializers.ValidationError(
+                {self.field: "Поле должно быть строкой"},
+                code="invalid_type"
+            )
 
         urls = re.findall(r"https?://[^\s]+", value)
         for url in urls:

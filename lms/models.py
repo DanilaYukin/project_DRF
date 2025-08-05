@@ -55,11 +55,19 @@ class Lessons(models.Model):
 class Subscription(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         null=True,
         blank=True,
         verbose_name="пользователь",
     )
     course = models.ForeignKey(
-        Course, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="курс"
+        Course, on_delete=models.CASCADE, null=True, blank=True, verbose_name="курс"
     )
+
+    class Meta:
+        verbose_name = "подписка"
+        verbose_name_plural = "подписки"
+        unique_together = [['user', 'course']]
+
+    def __str__(self):
+        return f"{self.user} - {self.course}"

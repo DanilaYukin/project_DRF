@@ -12,7 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
 class PaymentsSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
-        if not data.get('course') and not data.get('lessons'):
+        if not data.get("course") and not data.get("lessons"):
             raise serializers.ValidationError("Нужно выбрать курс или урок для оплаты.")
         return data
 
