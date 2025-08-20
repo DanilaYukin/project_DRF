@@ -4,27 +4,24 @@ services:
   web:
     build: .
     command: >
-      bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+      python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
       - static_volume:/app/static
     ports:
       - "8000:8000"
     depends_on:
-      - db
-      - redis
-      - celery
-      - celery-beat
+      db:
+        condition: service_healthy
     env_file:
-      - ./.env.web
-    restart: unless-stopped
+      - ./.env
 
   db:
     image: postgres:16
     volumes:
       - postgres_data:/var/lib/postgresql/data
     env_file:
-      - ./.env.postgres
+      - ./.env
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 30s
@@ -38,26 +35,26 @@ services:
 
   celery:
     build: .
-    command: celery -A your_project_name worker --loglevel=info
+    command: celery -A project_DRF worker --loglevel=info
     volumes:
       - .:/app
     depends_on:
       - db
       - redis
     env_file:
-      - ./.env.web
+      - ./.env
     restart: unless-stopped
 
   celery-beat:
     build: .
-    command: celery -A your_project_name beat --loglevel=info
+    command: celery -A project_DRF beat --loglevel=info
     volumes:
       - .:/app
     depends_on:
       - db
       - redis
     env_file:
-      - ./.env.web
+      - ./.env
     restart: unless-stopped
 
 volumes:

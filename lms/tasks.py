@@ -9,8 +9,8 @@ from datetime import datetime, timedelta
 
 @shared_task
 def send_email(user_email):
-    subject = 'Обновление курса'
-    message = 'Ваш курс обновлен'
+    subject = "Обновление курса"
+    message = "Ваш курс обновлен"
     send_mail(subject, message, EMAIL_HOST_USER, user_email)
 
 
@@ -23,5 +23,3 @@ def deactivate_user_afk():
         if time_difference > timedelta(days=30):
             user.is_active = False
             user.save()
-
-
