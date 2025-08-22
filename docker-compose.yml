@@ -13,6 +13,10 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      redis:
+        condition: service_started
+      celery:
+        condition: service_started
     env_file:
       - ./.env
 
@@ -35,7 +39,7 @@ services:
 
   celery:
     build: .
-    command: celery -A project_DRF worker --loglevel=info
+    command: celery -A config.celery worker --loglevel=info
     volumes:
       - .:/app
     depends_on:
@@ -47,7 +51,7 @@ services:
 
   celery-beat:
     build: .
-    command: celery -A project_DRF beat --loglevel=info
+    command: celery -A config.celery beat --loglevel=info
     volumes:
       - .:/app
     depends_on:
