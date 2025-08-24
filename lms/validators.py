@@ -16,8 +16,7 @@ class DescriptionUrlValidator:
 
         if not isinstance(value, str):
             raise serializers.ValidationError(
-                {self.field: "Поле должно быть строкой"},
-                code="invalid_type"
+                {self.field: "Поле должно быть строкой"}, code="invalid_type"
             )
 
         urls = re.findall(r"https?://[^\s]+", value)
