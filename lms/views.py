@@ -44,12 +44,11 @@ class CourseViewSet(viewsets.ModelViewSet):
         course = request.data.get("course_id")
         subscriptions = Subscription.objects.filter(
             course=course,
-        ).select_related('user')
+        ).select_related("user")
 
         for subscription in subscriptions:
             send_email.delay(
-                user_email=subscription.user.email,
-                course_title=course.title
+                user_email=subscription.user.email, course_title=course.title
             )
 
         return response
