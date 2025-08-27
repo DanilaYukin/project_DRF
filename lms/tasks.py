@@ -1,10 +1,10 @@
-import datetime
+from datetime import datetime, timedelta
 
 from celery import shared_task
 from django.core.mail import send_mail
+
 from config.settings import EMAIL_HOST_USER
 from users.models import User
-from datetime import datetime, timedelta
 
 
 @shared_task

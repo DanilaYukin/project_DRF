@@ -3,7 +3,6 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from users.models import User
 from users.permissions import IsModer, IsOwner
 from .models import Course, Lessons, Subscription
 from .paginators import LMSPaginator
