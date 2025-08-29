@@ -81,8 +81,15 @@ jobs:
 
       - name: Copy project files to server
         run: |
-          rsync -avz -e "ssh -o StrictHostKeyChecking=no" --exclude '__pycache__' . \
-          ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:${{ secrets.DEPLOY_DIR }}
+          rsync -rltDzv \
+            --no-owner --no-group \
+            --no-acls --no-xattrs \
+            --omit-dir-times \
+            --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r \
+            -e "ssh -o StrictHostKeyChecking=no" \
+            --delete \
+            ./ "${SSH_USER}@${SERVER_IP}:${DEPLOY_DIR}/"
+
 
       - name: Install dependencies on server
         run: |
