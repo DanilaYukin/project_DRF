@@ -5,13 +5,13 @@ from lms.validators import DescriptionUrlValidator
 
 
 class LessonsSerializer(serializers.ModelSerializer):
-    description = serializers.CharField(
-        validators=[DescriptionUrlValidator(field="description")]
-    )
 
     class Meta:
         model = Lessons
         fields = "__all__"
+        validators = [
+            DescriptionUrlValidator(field="description"),
+        ]
 
 
 class CourseSerializer(serializers.ModelSerializer):
