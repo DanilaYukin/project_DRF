@@ -81,17 +81,9 @@ jobs:
 
       - name: Clean /var/www directory
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-            cd /var/www
-            echo "Текущее содержимое /var/www:"
-            ls -la
-          
-            # Удаляем всё кроме venv
-            find /var/www -maxdepth 1 ! -name 'venv' ! -name '.' -exec rm -rf {} + 2>/dev/null || true
-          
-            echo "После очистки:"
-            ls -la
-          EOF    
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} "cd ${{ secrets.DEPLOY_DIR }} && echo 'Текущее содержимое /var/www:' && ls -la"
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} "cd ${{ secrets.DEPLOY_DIR }} && find /var/www -maxdepth 1 ! -name 'venv' ! -name '.' -exec rm -rf {} + 2>/dev/null || true"
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} "cd ${{ secrets.DEPLOY_DIR }} && echo 'После очистки:' && ls -la"
 
       - name: Copy project files to server
         run: |
