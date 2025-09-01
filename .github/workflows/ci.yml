@@ -87,17 +87,22 @@ jobs:
 
       - name: Copy project files to server
         run: |
-          rsync -rltDzv \
+          echo "Текущая директория: $(pwd)"
+          echo "Локальные файлы:"
+          ls -la
+    
+          # Копируем с подробным выводом
+          rsync -avz \
             --no-owner --no-group \
             --no-acls --no-xattrs \
             --omit-dir-times \
             --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r \
             -e "ssh -o StrictHostKeyChecking=no" \
-            --include='*' \
+            --delete \
             --exclude='.git' \
             --exclude='venv/' \
-            --delete \
-            ./ "${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:${{ secrets.DEPLOY_DIR }}/"
+            --progress \
+          ./* "${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:${{ secrets.DEPLOY_DIR }}"
 
 
       - name: Install dependencies on server
