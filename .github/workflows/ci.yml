@@ -87,28 +87,14 @@ jobs:
 
       - name: Copy project files to server
         run: |
-          rsync -avz \
-            --no-owner --no-group \
-            --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r \
+          echo "Копирование файлов на сервер..."
+          # Упрощенная команда rsync
+          rsync -av \
             -e "ssh -o StrictHostKeyChecking=no" \
-            --include='.*' \
             --exclude='.git' \
-            --exclude='venv/' \
-            --include='.*' \
-            --include='*/' \
-            --include='*.py' \
-            --include='*.html' \
-            --include='*.css' \
-            --include='*.js' \
-            --include='*.json' \
-            --include='*.txt' \
-            --include='*.md' \
-            --include='*.yml' \
-            --include='*.yaml' \
-            --include='Dockerfile' \
-            --exclude='*' \
-            --delete \
-            ./ "${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:${{ secrets.DEPLOY_DIR }}/"
+            --exclude='venv' \
+            --exclude='__pycache__' \
+            ./ "${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:/var/www/"
 
 
       - name: Install dependencies on server
