@@ -79,6 +79,20 @@ jobs:
           mkdir -p ~/.ssh
           ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
 
+      - name: Clean /var/www directory
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
+            cd /var/www
+            echo "Текущее содержимое /var/www:"
+            ls -la
+          
+            # Удаляем всё кроме venv
+            find /var/www -maxdepth 1 ! -name 'venv' ! -name '.' -exec rm -rf {} + 2>/dev/null || true
+          
+            echo "После очистки:"
+            ls -la
+          EOF    
+
       - name: Copy project files to server
         run: |
           rsync -rltDzv \
@@ -89,6 +103,7 @@ jobs:
             -e "ssh -o StrictHostKeyChecking=no" \
             --include='*' \
             --exclude='.git' \
+            --exclude='venv/' \
             --delete \
             ./ "${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:${{ secrets.DEPLOY_DIR }}/"
 
