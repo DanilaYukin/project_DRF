@@ -94,6 +94,19 @@ jobs:
             --include='.*' \
             --exclude='.git' \
             --exclude='venv/' \
+            --include='.*' \
+            --include='*/' \
+            --include='*.py' \
+            --include='*.html' \
+            --include='*.css' \
+            --include='*.js' \
+            --include='*.json' \
+            --include='*.txt' \
+            --include='*.md' \
+            --include='*.yml' \
+            --include='*.yaml' \
+            --include='Dockerfile' \
+            --exclude='*' \
             --delete \
             ./ "${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:${{ secrets.DEPLOY_DIR }}/"
 
