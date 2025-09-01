@@ -87,6 +87,8 @@ jobs:
             --omit-dir-times \
             --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r \
             -e "ssh -o StrictHostKeyChecking=no" \
+            --include='*' \
+            --exclude='.git' \
             --delete \
             ./ "${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:${{ secrets.DEPLOY_DIR }}/"
 
