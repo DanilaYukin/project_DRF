@@ -79,43 +79,26 @@ jobs:
           mkdir -p ~/.ssh
           ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
 
-      - name: Clean /var/www directory
-        run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} "
-            cd ${{ secrets.DEPLOY_DIR }}
-            echo 'Очищаем ${{ secrets.DEPLOY_DIR }}'
-            # Удаляем всё кроме venv
-            find . -maxdepth 1 ! -name 'venv' ! -name '.' -exec rm -rf {} + 2>/dev/null || true
-            echo 'После очистки:'
-            ls -la
-
       - name: Copy project files to server
         run: |
-          echo "Копирование файлов на сервер..."
-          # Упрощенная команда rsync
-          rsync -av \
+          rsync -rltDzv \
+            --no-owner --no-group \
+            --no-acls --no-xattrs \
+            --omit-dir-times \
+            --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r \
             -e "ssh -o StrictHostKeyChecking=no" \
-            --exclude='.git' \
-            --exclude='venv' \
-            --exclude='__pycache__' \
-            ./ "${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:${{ secrets.DEPLOY_DIR }}"
+            --delete \
+            ./ "${{ SSH_USER }}@${{ SERVER_IP }}:${{ DEPLOY_DIR }}/"
 
 
       - name: Install dependencies on server
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOL'
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
             cd ${{ secrets.DEPLOY_DIR }}
-            echo "Финальное содержимое /var/www:"
-            ls -la
-          
-            if [ ! -d "venv" ]; then
-              python3 -m venv venv
-            fi
+            python3 -m venv venv
             source venv/bin/activate
-            pip install --upgrade pip
             pip install -r requirements.txt
-            echo "Зависимости установлены успешно!"
-          EOL
+          EOF
 
       - name: Apply migrations on server
         run: |
