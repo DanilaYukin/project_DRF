@@ -102,12 +102,19 @@ jobs:
 
       - name: Install dependencies on server
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOL'
             cd ${{ secrets.DEPLOY_DIR }}
-            python3 -m venv venv
+            echo "Финальное содержимое /var/www:"
+            ls -la
+          
+            if [ ! -d "venv" ]; then
+              python3 -m venv venv
+            fi
             source venv/bin/activate
+            pip install --upgrade pip
             pip install -r requirements.txt
-          EOF
+            echo "Зависимости установлены успешно!"
+          EOL
 
       - name: Apply migrations on server
         run: |
