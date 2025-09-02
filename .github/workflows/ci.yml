@@ -97,6 +97,8 @@ jobs:
             cd ${{ secrets.DEPLOY_DIR }}
             git clone git@github.com:DanilaYukin/project_DRF.git
             cd project_DRF
+            git switch develop 
+            git pull
 
             python3 -m venv venv
             echo "WE HERE: $(pwd)"
