@@ -95,7 +95,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
             cd ${{ secrets.DEPLOY_DIR }}
-            git clone https://github.com/DanilaYukin/project_DRF.git
+            git clone git@github.com:DanilaYukin/project_DRF.git
             cd project_DRF
 
             python3 -m venv venv
