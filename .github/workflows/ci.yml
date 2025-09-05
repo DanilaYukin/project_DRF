@@ -122,6 +122,18 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
             cd ${{ secrets.DEPLOY_DIR }}
             cd project_DRF
+            touch .env
+            
+            echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} > .env
+            echo POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }} > .env
+            echo POSTGRES_DB: ${{ secrets.POSTGRES_DB }} > .env
+            echo POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }} > .env
+            echo POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }} > .env
+            echo DEBUG: ${{ secrets.DEBUG }} > .env
+            echo SECRET_KEY: ${{ secrets.SECRET_KEY }} > .env
+            echo CELERY_BROKER_URL: ${{ secrets.CELERY_BROKER_URL }} > .env
+            echo CELERY_RESULT_BACKEND: ${{ secrets.CELERY_RESULT_BACKEND }} > .env
+            echo STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }} >> .env
           
             echo "WE HERE: $(pwd)"
             echo "FILES"
