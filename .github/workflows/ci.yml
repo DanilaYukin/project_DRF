@@ -122,6 +122,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
             cd ${{ secrets.DEPLOY_DIR }}
             cd project_DRF
+            python3 -m venv venv
           
             cat > .env << 'EOL'
             POSTGRES_USER=${{ secrets.POSTGRES_USER }}
@@ -150,6 +151,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
             cd ${{ secrets.DEPLOY_DIR }}
             cd project_DRF
+            python3 -m venv venv
           
             cat > .env << 'EOL'
             POSTGRES_USER=${{ secrets.POSTGRES_USER }}
