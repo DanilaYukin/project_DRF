@@ -71,6 +71,50 @@ docker-compose logs web --tail=20
 2. `lms` - директория курсов и уроков
 3. `users` - директория пользователей
 
+
+##  Доступ к развернутому приложению
+
+Приложение доступно по адресу:
+
+**http://158.160.171.133//**
+---
+
+##  Установка и запуск локально
+
+1. Склонируй репозиторий:
+   ```bash
+   git clone https://github.com/DanilaYukin/project_DRF.git
+   cd project_DRF
+   
+Создай виртуальное окружение и установи зависимости:
+
+    python3 -m venv venv
+    source venv/bin/activate
+    pip install -r requirements.txt
+
+Создай файл .env в корне проекта со своими переменными окружения:
+    
+    makefile
+    Копировать код
+    SECRET_KEY=твой_secret_key
+    DEBUG=True
+    DATABASE_URL=...
+    CELERY_BROKER_URL=...
+    ...
+
+Примените миграции и соберите статические файлы:
+    
+    bash
+    Копировать код
+    python manage.py migrate
+    python manage.py collectstatic --noinput
+    Запуск:
+    
+    bash
+    Копировать код
+    python manage.py runserver
+    ```
+
 ## Лицензия:
 
 Этот проект лицензирован по [лицензии MIT](LICENSE)
